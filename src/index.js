@@ -22,12 +22,10 @@ function onSearch(evt) {
 
   fetchCountries(name)
     .then(data => {
-      
       console.log(data);
 
-      clearCountries();
-
       if (data.length > 10) {
+        clearCountries();
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
@@ -35,12 +33,18 @@ function onSearch(evt) {
       }
 
       if (data.length === 1) {
+        countryList.innerHTML = '';
         return (countryInfo.innerHTML = createMarkupInfo(data));
       }
+
+      countryInfo.innerHTML = '';
       countryList.innerHTML = createMarkupList(data);
     })
     .catch(error => {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
+      if ((error.message = '404')) {
+        clearCountries();
+        Notiflix.Notify.failure('Oops, there is no country with that name');
+      } else Notiflix.Notify.failure('Error.message');
     });
 }
 
@@ -65,7 +69,7 @@ function createMarkupInfo(data) {
   <h2>  ${name.common}</h2>
   <p>Capital: ${capital}</p>
   <p>Population: ${population}</p>
-  <p>Languages: ${Object.values(languages)}</p>`
+  <p>Languages: ${Object.values(languages).join(', ')}</p>`
       );
     },
     ''
