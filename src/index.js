@@ -41,7 +41,7 @@ function onSearch(evt) {
       countryList.innerHTML = createMarkupList(data);
     })
     .catch(error => {
-      if ((error.message = '404')) {
+      if ((error.message === '404')) {
         clearCountries();
         Notiflix.Notify.failure('Oops, there is no country with that name');
       } else Notiflix.Notify.failure('Error.message');
